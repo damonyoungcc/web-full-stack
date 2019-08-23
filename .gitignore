@@ -1,2 +1,4 @@
 node_modules
 web-clinet/node_modules
+web-server/yarn.lock
+web-clinet/yarn.lock

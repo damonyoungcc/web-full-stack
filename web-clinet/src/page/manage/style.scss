@@ -1,0 +1,17 @@
+.person-table-btn {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 18px;
+  .table-btn-item {
+    cursor: pointer;
+  }
+}
+.person-add,
+.event-add {
+  margin-bottom: 20px;
+}
+.pid-tip {
+  font-size: 12px;
+  color: rgb(250, 110, 110);
+}

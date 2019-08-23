@@ -1,0 +1,29 @@
+.node {
+  cursor: pointer;
+  stroke: #3182bd;
+  stroke-width: 1.5px;
+}
+
+.link {
+  fill: none;
+  stroke: #9ecae1;
+  stroke-width: 1.5px;
+}
+.bar {
+  margin: 0 auto;
+  svg {
+    text-align: center;
+  }
+}
+.eventTree {
+  position: relative;
+}
+.tooltip {
+  padding: 10px;
+  color: #fff;
+  position: absolute;
+  width: 250px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}

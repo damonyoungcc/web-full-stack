@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { getPersonsList } from '../../store/persons/action';
 import { Table, Icon, Tooltip, Button, Modal, Form, Input, message } from 'antd';
 import Util from '../../js/Util';
 import './style.scss';
@@ -10,7 +12,6 @@ class PersonsManage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      personListData: [],
       visible: false,
       type: '',
       item: {},
@@ -18,8 +19,8 @@ class PersonsManage extends React.Component {
   }
 
   // 组件挂载请求table列表数据
-  componentDidMount() {
-    this.getPersonList();
+  componentWillMount() {
+    this.props.getPersonsList();
   }
 
   // 显示弹窗组件
@@ -54,7 +55,7 @@ class PersonsManage extends React.Component {
                 },
                 () => {
                   message.success(`${type}成功`);
-                  this.getPersonList();
+                  this.props.getPersonsList();
                 },
               );
             } else {
@@ -86,16 +87,6 @@ class PersonsManage extends React.Component {
     });
   };
 
-  // 请求人员列表
-  getPersonList() {
-    axios.get('http://localhost:8080/api/persons/list').then((res) => {
-      if (res.data.success) {
-        this.setState({
-          personListData: res.data.data,
-        });
-      }
-    });
-  }
   // 删除人员
   deletePerson = (item) => {
     const _this = this;
@@ -121,7 +112,7 @@ class PersonsManage extends React.Component {
             console.log(res);
             if (res.data.success) {
               message.success('删除成功');
-              _this.getPersonList();
+              _this.props.getPersonsList();
             } else {
               message.error('删除失败');
             }
@@ -137,7 +128,8 @@ class PersonsManage extends React.Component {
   };
 
   render() {
-    const { visible, personListData, type, item } = this.state;
+    const { visible, type, item } = this.state;
+    const { personsListData } = this.props;
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -163,7 +155,7 @@ class PersonsManage extends React.Component {
         </Tooltip>
         <Table
           bordered
-          dataSource={personListData}
+          dataSource={personsListData}
           rowKey={(row) => row.id}
           columns={[
             {
@@ -253,5 +245,16 @@ class PersonsManage extends React.Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    personsListData: state.personsListData.data,
+  };
+};
+const mapDispatchToProps = (dispatch) => ({
+  getPersonsList: () => dispatch(getPersonsList()),
+});
 const WrappedPersonsManage = Form.create({ name: 'PersonsManage' })(PersonsManage);
-export default WrappedPersonsManage;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(WrappedPersonsManage);

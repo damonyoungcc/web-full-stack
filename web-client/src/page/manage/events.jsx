@@ -111,7 +111,6 @@ class EventsManage extends React.Component {
             }
           })
           .catch((err) => {
-            console.log(err);
             this.setState({
               visible: false,
             });
@@ -142,7 +141,6 @@ class EventsManage extends React.Component {
             },
           )
           .then((res) => {
-            console.log(res);
             if (res.data.success) {
               message.success('删除成功');
               _this.initData();
@@ -163,7 +161,6 @@ class EventsManage extends React.Component {
   render() {
     const { tableData, visible, type, item, flag } = this.state;
     const { personsList } = this.props;
-    console.log(tableData);
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {

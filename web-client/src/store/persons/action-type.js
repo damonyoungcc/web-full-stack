@@ -1,0 +1,1 @@
+export const GET_PERSONS_LIST = 'GET_PERSONS_LIST';

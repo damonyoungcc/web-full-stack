@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { getUserAuth } from '../../store/login/actions';
 import Layout from '../components/layout';
 import './style.scss';
 import Util from '../../js/Util';
@@ -18,6 +20,7 @@ class Home extends React.Component {
   }
   componentWillMount() {
     this.getUserInfo();
+    this.props.getUserAuth();
   }
 
   componentDidMount() {
@@ -73,7 +76,8 @@ class Home extends React.Component {
 
   render() {
     const { tableData, personsList, isAuthAdmin } = this.state;
-    console.log(tableData);
+    console.log(this.props.userAuthData);
+    // console.log(tableData);
     return (
       <div>
         <Layout>
@@ -90,4 +94,17 @@ class Home extends React.Component {
     );
   }
 }
-export default Home;
+
+const mapStateToProps = (state) => {
+  return {
+    userAuthData: state.userAuthData.data,
+  };
+};
+const mapDispatchToProps = (dispatch) => ({
+  getUserAuth: () => dispatch(getUserAuth()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Home);

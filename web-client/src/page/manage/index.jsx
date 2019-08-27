@@ -26,7 +26,6 @@ class ManageTab extends React.Component {
 
   // 切换tab的回调函数
   callback(key) {
-    console.log(key);
     if (key === '1') {
       this.getPersonList();
     }

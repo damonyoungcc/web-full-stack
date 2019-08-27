@@ -18,7 +18,7 @@ class UsersCtl {
     }
     const { username, id, auth } = user;
     const token = jsonwebtoken.sign({ id, username, auth }, tokenSecret, { expiresIn: '10d' });
-    ctx.body = new SuccessModel({ token }, '登录成功');
+    ctx.body = new SuccessModel({ token, username, auth }, '登录成功');
   }
 
   // 注册

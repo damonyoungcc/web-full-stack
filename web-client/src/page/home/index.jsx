@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { getUSerAuth } from '../../store/login/actions';
+import { getUserAuth } from '../../store/login/actions';
 import Layout from '../components/layout';
 import './style.scss';
 import Util from '../../js/Util';
@@ -20,6 +20,7 @@ class Home extends React.Component {
   }
   componentWillMount() {
     this.getUserInfo();
+    this.props.getUserAuth();
   }
 
   componentDidMount() {
@@ -76,7 +77,7 @@ class Home extends React.Component {
   render() {
     const { tableData, personsList, isAuthAdmin } = this.state;
     console.log(this.props.userAuthData);
-    console.log(tableData);
+    // console.log(tableData);
     return (
       <div>
         <Layout>
@@ -100,7 +101,7 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  getUSerAuth: () => dispatch(getUSerAuth()),
+  getUserAuth: () => dispatch(getUserAuth()),
 });
 
 export default connect(

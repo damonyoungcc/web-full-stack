@@ -7,8 +7,8 @@ const token = Util.getToken();
 const actionUserAuthCreator = (data) => {
   const { auth, username } = data;
   return {
+    type: GET_USER_AUTH,
     data: {
-      type: GET_USER_AUTH,
       isLogin: true, // 是否登录
       isAuth: auth === 1, // 是否有权限
       isAdminAuth: username === 'admin', // 是否是超级管理员
@@ -16,7 +16,7 @@ const actionUserAuthCreator = (data) => {
   };
 };
 
-export const getUSerAuth = () => {
+export const getUserAuth = () => {
   return (dispatch) => {
     return axios
       .get('http://localhost:8080/api/users/info', {

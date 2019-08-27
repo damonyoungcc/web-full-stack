@@ -1,38 +1,78 @@
 import React from 'react';
-// import { createHashHistory } from 'history';
-// import axios from 'axios';
+import { createHashHistory } from 'history';
+import axios from 'axios';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import { userLogin } from '../../store/login/actions';
-import { Form, Icon, Input, Button } from 'antd';
+import { Redirect } from "react-router-dom";
+import { getUserAuth } from '../../store/login/actions';
+import { Form, Icon, Input, Button, message } from 'antd';
 import Layout from '../components/layout';
 import './style.scss';
-// import Util from '../../js/Util';
-// const history = createHashHistory({ forceRefresh: true });
+import Util from '../../js/Util';
+const history = createHashHistory({ forceRefresh: true });
 
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    const { match } = props;
+    const { path } = match;
+    this.state = {
+      path,
+    };
   }
-  componentDidMount() {}
+  componentDidMount() {
+    // this.getUserInfo();
+  }
+
+  getUserInfo() {
+    const token = Util.getToken();
+    if (token) {
+      axios
+        .get('http://localhost:8080/api/users/info', {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((data) => {
+          if (data.data.success) {
+            history.push('/');
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const isSignIn = this.state.path === '/signin';
+    const postUrl = `http://localhost:8080/api/users/${isSignIn ? 'login' : 'register'}`;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.getUserLogin(values);
+        axios
+          .post(postUrl, values)
+          .then((data) => {
+            if (data.data.success) {
+              if (isSignIn) {
+                Util.setToken(data.data.data.token);
+                history.push('/');
+              } else {
+                history.push('/signin');
+              }
+            } else {
+              message.error(data.data.message);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     });
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { userData } = this.props;
-    const { isLogin } = userData;
-    if (isLogin) {
-      return <Redirect to="/" />;
-    }
+    const { userAuthData } = this.props;
+    console.log(userAuthData);
+    const { path } = this.state;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -83,7 +123,7 @@ class LoginForm extends React.Component {
           </Form.Item>
           <Form.Item {...tailFormItemLayout} className="item">
             <Button size="large" type="primary" htmlType="submit" className="login-form-button">
-              登录
+              注册
             </Button>
           </Form.Item>
         </Form>
@@ -94,11 +134,11 @@ class LoginForm extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    userData: state.userData.data,
+    userAuthData: state.userAuthData.data,
   };
 };
 const mapDispatchToProps = (dispatch) => ({
-  getUserLogin: (params) => dispatch(userLogin(params)),
+  getUserAuth: (params) => dispatch(getUserAuth(params)),
 });
 
 const wrappedLoginForm = Form.create({ name: 'login' })(LoginForm);

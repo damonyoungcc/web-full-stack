@@ -20,7 +20,7 @@ class ManageTab extends React.Component {
   }
 
   componentWillMount() {
-    this.getUserInfo();
+    // this.getUserInfo();
     this.getPersonList();
   }
 

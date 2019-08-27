@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import personsListData from './persons/reducer';
-import userAuthData from './login/reducer';
+import userData from './login/reducer';
 
 export default combineReducers({
   personsListData,
-  userAuthData,
+  userData,
 });

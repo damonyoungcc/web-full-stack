@@ -1,13 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { getUserAuth } from '../../store/login/actions';
 import Layout from '../components/layout';
 import './style.scss';
 import Util from '../../js/Util';
 import Bar from './d3';
-import { createHashHistory } from 'history';
-const history = createHashHistory({ forceRefresh: true });
+// import { createHashHistory } from 'history';
+// const history = createHashHistory({ forceRefresh: true });
 
 class Home extends React.Component {
   constructor(props) {
@@ -19,37 +18,11 @@ class Home extends React.Component {
     };
   }
   componentWillMount() {
-    this.getUserInfo();
-    this.props.getUserAuth();
+    // this.getUserInfo();
   }
 
   componentDidMount() {
     this.initData();
-  }
-
-  getUserInfo() {
-    const token = Util.getToken();
-    if (token) {
-      axios
-        .get('http://localhost:8080/api/users/info', {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((data) => {
-          if (!data.data.success) {
-            history.push('/signin');
-          }
-          if (data.data.success && data.data.data.auth === 1) {
-            this.setState({
-              isAuthAdmin: true,
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      history.push('/signin');
-    }
   }
 
   async initData() {
@@ -76,8 +49,6 @@ class Home extends React.Component {
 
   render() {
     const { tableData, personsList, isAuthAdmin } = this.state;
-    console.log(this.props.userAuthData);
-    // console.log(tableData);
     return (
       <div>
         <Layout>
@@ -97,14 +68,11 @@ class Home extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    userAuthData: state.userAuthData.data,
+    userAuthData: state.userData.data,
   };
 };
-const mapDispatchToProps = (dispatch) => ({
-  getUserAuth: () => dispatch(getUserAuth()),
-});
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  null,
 )(Home);

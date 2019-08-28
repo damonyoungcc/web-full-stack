@@ -14,7 +14,6 @@ class Home extends React.Component {
     this.state = {
       tableData: [],
       personsList: [],
-      isAuthAdmin: false,
     };
   }
 
@@ -45,7 +44,9 @@ class Home extends React.Component {
   }
 
   render() {
-    const { tableData, personsList, isAuthAdmin } = this.state;
+    const { tableData, personsList } = this.state;
+    const { userData } = this.props;
+    const { isAdminAuth } = userData;
     return (
       <div>
         <Layout>
@@ -54,7 +55,7 @@ class Home extends React.Component {
               tableData={tableData}
               personsList={personsList}
               reload={() => this.reload()}
-              isAuthAdmin={isAuthAdmin}
+              isAuthAdmin={isAdminAuth}
             />
           )}
         </Layout>
@@ -65,7 +66,7 @@ class Home extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    userAuthData: state.userData.data,
+    userData: state.userData.data,
   };
 };
 

@@ -19,7 +19,7 @@ class PersonsManage extends React.Component {
   }
 
   // 组件挂载请求table列表数据
-  componentWillMount() {
+  componentDidMount() {
     this.props.getPersonsList();
   }
 

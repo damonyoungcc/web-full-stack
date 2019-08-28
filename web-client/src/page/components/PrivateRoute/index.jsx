@@ -10,7 +10,7 @@ class PrivateRoute extends Component {
 
   render() {
     const { component: Component, userData, ...rest } = this.props;
-    const { isLogin, isAuth } = userData;
+    const { isLogin } = userData;
     return (
       <Route
         {...rest}

@@ -1,13 +1,12 @@
 import React from 'react';
 import { Tabs } from 'antd';
+import { connect } from 'react-redux';
+import axios from 'axios';
 import Layout from '../components/layout';
 import EventsManage from './events';
 import PersonsManage from './persons';
 import UsersManage from './users';
-import Util from '../../js/Util';
-import axios from 'axios';
-import { createHashHistory } from 'history';
-const history = createHashHistory({ forceRefresh: true });
+
 const { TabPane } = Tabs;
 
 class ManageTab extends React.Component {
@@ -20,7 +19,6 @@ class ManageTab extends React.Component {
   }
 
   componentDidMount() {
-    // this.getUserInfo();
     this.getPersonList();
   }
 
@@ -42,32 +40,10 @@ class ManageTab extends React.Component {
     });
   }
 
-  getUserInfo() {
-    const token = Util.getToken();
-    if (token) {
-      axios
-        .get('http://localhost:8080/api/users/info', {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((data) => {
-          if (!data.data.success || data.data.data.auth !== 1) {
-            history.push('/');
-          }
-          if (data.data.data.username === 'admin') {
-            this.setState({
-              isShowAuth: true,
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      history.push('/');
-    }
-  }
   render() {
-    const { isShowAuth, personListData } = this.state;
+    const { personListData } = this.state;
+    const { userData } = this.props;
+    const { isAdminAuth } = userData;
     return (
       <Layout>
         <Tabs defaultActiveKey="1" onChange={(key) => this.callback(key)}>
@@ -77,7 +53,7 @@ class ManageTab extends React.Component {
           <TabPane tab="人员管理" key="2">
             <PersonsManage key="person" />
           </TabPane>
-          {isShowAuth && (
+          {isAdminAuth && (
             <TabPane tab="权限管理" key="3">
               <UsersManage key="user" />
             </TabPane>
@@ -87,4 +63,14 @@ class ManageTab extends React.Component {
     );
   }
 }
-export default ManageTab;
+
+const mapStateToProps = (state) => {
+  return {
+    userData: state.userData.data,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null,
+)(ManageTab);

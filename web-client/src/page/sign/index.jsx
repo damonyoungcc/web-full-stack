@@ -1,14 +1,10 @@
 import React from 'react';
-// import { createHashHistory } from 'history';
-// import axios from 'axios';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { userLogin } from '../../store/login/actions';
 import { Form, Icon, Input, Button } from 'antd';
 import Layout from '../components/layout';
 import './style.scss';
-// import Util from '../../js/Util';
-// const history = createHashHistory({ forceRefresh: true });
 
 class LoginForm extends React.Component {
   constructor(props) {

@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 import Layout from '../components/layout';
 import './style.scss';
 import Util from '../../js/Util';
-import Bar from './d3';
-// import { createHashHistory } from 'history';
-// const history = createHashHistory({ forceRefresh: true });
+import RelationChart from './d3';
 
 class Home extends React.Component {
   constructor(props) {
@@ -46,16 +44,16 @@ class Home extends React.Component {
   render() {
     const { tableData, personsList } = this.state;
     const { userData } = this.props;
-    const { isAdminAuth } = userData;
+    const { isAuth } = userData;
     return (
       <div>
         <Layout>
           {tableData.length && (
-            <Bar
+            <RelationChart
               tableData={tableData}
               personsList={personsList}
               reload={() => this.reload()}
-              isAuthAdmin={isAdminAuth}
+              isAuthAdmin={isAuth}
             />
           )}
         </Layout>

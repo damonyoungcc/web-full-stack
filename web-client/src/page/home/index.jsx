@@ -17,9 +17,6 @@ class Home extends React.Component {
       isAuthAdmin: false,
     };
   }
-  componentWillMount() {
-    // this.getUserInfo();
-  }
 
   componentDidMount() {
     this.initData();

@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import { createHashHistory } from 'history';
 import './style.scss';
 import { Icon, Dropdown, Menu } from 'antd';
@@ -16,35 +16,7 @@ class CommonHeader extends React.Component {
       userName: '',
     };
   }
-  componentDidMount() {
-    this.getUserInfo();
-  }
-  getUserInfo() {
-    const token = Util.getToken();
-    if (token) {
-      axios
-        .get('http://localhost:8080/api/users/info', {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((data) => {
-          if (data.data.success) {
-            this.setState({
-              isLogin: true,
-              userName: data.data.data.username,
-              isAuth: data.data.data.auth === 1,
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      this.setState({
-        isLogin: false,
-        isAuth: false,
-      });
-    }
-  }
+  componentDidMount() {}
   goSign(type) {
     history.push(`/${type}`);
   }
@@ -59,9 +31,12 @@ class CommonHeader extends React.Component {
     window.location.reload('/');
   }
   render() {
-    const { location = {} } = history;
-    const { pathname } = location;
-    const { isAuth, isLogin, userName } = this.state;
+    // const { location = {} } = history;
+    // const { pathname } = location;
+    // const { isAuth, isLogin, userName } = this.state;
+
+    const { userData } = this.props;
+    const { username, isAuth, isLogin } = userData;
 
     const menu = (
       <Menu>
@@ -81,27 +56,18 @@ class CommonHeader extends React.Component {
         </div>
         <div className="nav-right">
           {isAuth && (
-            <div
-              className={pathname === '/manage' ? 'manage active' : 'manage'}
-              onClick={() => this.goManage()}
-            >
+            <div className="manage" onClick={() => this.goManage()}>
               管理
             </div>
           )}
           <div className="mine">
             {!isLogin ? (
               <Fragment>
-                <div
-                  className={pathname === '/signin' ? 'sign active' : 'sign'}
-                  onClick={() => this.goSign('signin')}
-                >
+                <div className="sign" onClick={() => this.goSign('signin')}>
                   Sign In
                 </div>
                 <div className="split-line">|</div>
-                <div
-                  className={pathname === '/signup' ? 'sign active' : 'sign'}
-                  onClick={() => this.goSign('signup')}
-                >
+                <div className="sign" onClick={() => this.goSign('signup')}>
                   Sign Up
                 </div>
               </Fragment>
@@ -109,7 +75,7 @@ class CommonHeader extends React.Component {
               <Dropdown overlay={menu}>
                 <div className="icon-header">
                   <Icon type="smile" className="icon-mine icon" theme="twoTone" />
-                  <span className="user-name">{userName}</span>
+                  <span className="user-name">{username}</span>
                   <Icon type="caret-down" className="down icon" />
                 </div>
               </Dropdown>
@@ -121,4 +87,13 @@ class CommonHeader extends React.Component {
   }
 }
 
-export default CommonHeader;
+const mapStateToProps = (state) => {
+  return {
+    userData: state.userData.data,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null,
+)(CommonHeader);

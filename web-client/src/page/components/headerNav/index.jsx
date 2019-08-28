@@ -31,10 +31,6 @@ class CommonHeader extends React.Component {
     window.location.reload('/');
   }
   render() {
-    // const { location = {} } = history;
-    // const { pathname } = location;
-    // const { isAuth, isLogin, userName } = this.state;
-
     const { userData } = this.props;
     const { username, isAuth, isLogin } = userData;
 

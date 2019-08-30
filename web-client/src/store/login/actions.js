@@ -2,8 +2,6 @@ import axios from 'axios';
 import { USER_LOGIN, GET_USER_AUTH } from './action-type';
 import Util from '../../js/Util';
 
-const token = Util.getToken();
-
 const actionUserLoginCreator = (type, data) => {
   const { auth, username } = data;
   return {
@@ -21,14 +19,15 @@ export const userLogin = (params) => {
   return (dispatch) => {
     return axios.post('http://localhost:8080/api/users/login', params).then((res) => {
       if (res.data.success) {
-        dispatch(actionUserLoginCreator(USER_LOGIN, res.data.data));
         Util.setToken(res.data.data.token);
+        dispatch(actionUserLoginCreator(USER_LOGIN, res.data.data));
       }
     });
   };
 };
 
 export const getUserAuth = () => {
+  const token = Util.getToken();
   return (dispatch) => {
     if (token) {
       return axios

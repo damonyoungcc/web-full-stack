@@ -1,7 +1,7 @@
 const Util = {
   // 登录后将token存到localStorage中
-  setToken(token) {
-    return localStorage.setItem('token', token);
+  async setToken(token) {
+    await localStorage.setItem('token', token);
   },
   // 取出localStorage中的token
   getToken() {

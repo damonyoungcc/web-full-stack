@@ -10,34 +10,53 @@
 
 ## v_0.0 原始版本
 
-前端使用 create-react-app 脚手架创建 client 端项目
+前端使用 `create-react-app` 脚手架创建 client 端项目
 
-1. react
-2. react-router-dom
-3. ant-design
-4. d3
+1. `react`
+2. `react-router-dom`
+3. `ant-design`
+4. `d3`
 
-后端使用 koa 框架搭建
+后端使用 `koa` 框架搭建
 
-1. koa
-2. mysql
-3. sequelize
-4. kwt
+1. `koa`
+2. `mysql`
+3. `sequelize`
+4. `kwt`
 
 下个版本优化目标：
 
 1. 增加状态管理
-2. 路由登录鉴权，目前实现较 low，都是在 componentDidMount 里请求接口
+2. 路由登录鉴权，目前实现较 low，都是在 `componentDidMount` 里请求接口
 
-## v_0.1 版本
+## `v_0.1` 版本
 
 更新记录
 
-1. 增加 redux 状态管理
+1. 增加 `redux` 状态管理
 2. 优化路由鉴权，根据登录状态及登录后用户的权限，在路由层做鉴权及跳转控制。
 
 下个版本优化目标：
 
 1. 路由级的组件懒加载
-2. 统一处理 axios 请求 url 前缀
-3. 增加请求接口错误公共组件
+2. 统一处理 `axios` 请求 url 前缀
+
+## `v_0.2` 版本
+
+更新记录
+
+1. 路由级的组件懒加载
+2. 实例化`axios`后，增加公共`baseURL`
+
+   ```js
+   const Api = axios.create({
+     baseURL: 'http://localhost:8080/api/',
+     timeout: 20000,
+   });
+   // 会加入更多拦截器，优化token和错误响应处理等
+   ```
+
+下个版本优化目标：
+
+1. 使用装饰器引入`antd from`组件
+2. 利用`axios`优化`token`发送

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs } from 'antd';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import Api from '../../js/Api'
 import Layout from '../components/layout';
 import EventsManage from './events';
 import PersonsManage from './persons';
@@ -31,7 +31,7 @@ class ManageTab extends React.Component {
 
   // 请求人员列表
   getPersonList() {
-    axios.get('http://localhost:8080/api/persons/list').then((res) => {
+    Api.get('/persons/list').then((res) => {
       if (res.data.success) {
         this.setState({
           personListData: res.data.data,

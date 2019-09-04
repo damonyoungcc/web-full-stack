@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import axios from 'axios';
 import {
   Table,
   Tag,
@@ -16,6 +15,7 @@ import {
 } from 'antd';
 import './style.scss';
 import Util from '../../js/Util';
+import Api from '../../js/Api';
 const { TextArea } = Input;
 const { Option } = Select;
 const { confirm } = Modal;
@@ -47,11 +47,11 @@ class EventsManage extends React.Component {
     });
   }
   getEventsList() {
-    return axios.get('http://localhost:8080/api/events/list');
+    return Api.get('/events/list');
   }
 
   getPersonsList() {
-    return axios.get('http://localhost:8080/api/persons/list');
+    return Api.get('/persons/list');
   }
   // 显示弹窗组件
   showModal = (type, item, flag) => {
@@ -79,12 +79,12 @@ class EventsManage extends React.Component {
       if (!err) {
         const createtime = Date.now();
         const token = Util.getToken();
-        const postUrl = `http://localhost:8080/api/events/${flag === 'add' ? 'create' : 'update'}`;
+        const postUrl = `/events/${flag === 'add' ? 'create' : 'update'}`;
         values.createtime = createtime;
         if(flag === 'edit') {
           values.id = item.id;
         }
-        axios
+        Api
           .post(postUrl, values, {
             headers: { Authorization: `Bearer ${token}` },
           })
@@ -130,9 +130,9 @@ class EventsManage extends React.Component {
       cancelText: '取消',
       onOk() {
         const token = Util.getToken();
-        const postUrl = 'http://localhost:8080/api/events/delete';
+        const postUrl = '/events/delete';
         const { id } = item;
-        axios
+        Api
           .post(
             postUrl,
             { id },

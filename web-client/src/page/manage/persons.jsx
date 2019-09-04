@@ -1,9 +1,9 @@
 import React from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import { getPersonsList } from '../../store/persons/action';
 import { Table, Icon, Tooltip, Button, Modal, Form, Input, message } from 'antd';
 import Util from '../../js/Util';
+import Api from '../../js/Api'
 import './style.scss';
 const { confirm } = Modal;
 const { TextArea } = Input;
@@ -40,10 +40,10 @@ class PersonsManage extends React.Component {
     validateFields((err, values) => {
       if (!err) {
         const token = Util.getToken();
-        const postUrl = `http://localhost:8080/api/persons/${
+        const postUrl = `/persons/${
           type === '新增' ? 'create' : 'update'
         }`;
-        axios
+        Api
           .post(postUrl, values, {
             headers: { Authorization: `Bearer ${token}` },
           })
@@ -98,9 +98,9 @@ class PersonsManage extends React.Component {
       cancelText: '取消',
       onOk() {
         const token = Util.getToken();
-        const postUrl = 'http://localhost:8080/api/persons/delete';
+        const postUrl = '/persons/delete';
         const { id } = item;
-        axios
+        Api
           .post(
             postUrl,
             { id },

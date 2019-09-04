@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Modal, Form, Input, InputNumber, message, Select } from 'antd';
 import * as d3 from 'd3';
 import './style.scss';
 import Util from '../../js/Util';
+import Api from '../../js/Api';
 const { Fragment } = React;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -43,12 +43,12 @@ class EventsD3 extends Component {
       if (!err) {
         const createtime = Date.now();
         const token = Util.getToken();
-        const postUrl = `http://localhost:8080/api/events/${flag === 'add' ? 'create' : 'update'}`;
+        const postUrl = `/events/${flag === 'add' ? 'create' : 'update'}`;
         values.createtime = createtime;
         if (flag === 'edit') {
           values.id = item.id;
         }
-        axios
+        Api
           .post(postUrl, values, {
             headers: { Authorization: `Bearer ${token}` },
           })

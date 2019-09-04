@@ -1,9 +1,9 @@
 import React from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import Layout from '../components/layout';
 import './style.scss';
 import Util from '../../js/Util';
+import Api from '../../js/Api';
 import RelationChart from './d3';
 
 class Home extends React.Component {
@@ -31,11 +31,11 @@ class Home extends React.Component {
     });
   }
   getEventsList() {
-    return axios.get('http://localhost:8080/api/events/list');
+    return Api.get('/events/list');
   }
 
   getPersonsList() {
-    return axios.get('http://localhost:8080/api/persons/list');
+    return Api.get('/persons/list');
   }
   reload() {
     this.initData();

@@ -1,7 +1,7 @@
 import React from 'react';
-import axios from 'axios';
 import { Table, Icon, Tooltip, Switch, message, Modal } from 'antd';
 import Util from '../../js/Util';
+import Api from '../../js/Api';
 import './style.scss';
 const { confirm } = Modal;
 
@@ -19,17 +19,15 @@ class UsersManage extends React.Component {
 
   getUserList() {
     const token = Util.getToken();
-    axios
-      .get('http://localhost:8080/api/users/list', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => {
-        if (res.data.success) {
-          this.setState({
-            userListData: res.data.data,
-          });
-        }
-      });
+    Api.get('/users/list', {
+      headers: { Authorization: `Bearer ${token}` },
+    }).then((res) => {
+      if (res.data.success) {
+        this.setState({
+          userListData: res.data.data,
+        });
+      }
+    });
   }
 
   // 删除
@@ -43,15 +41,14 @@ class UsersManage extends React.Component {
       cancelText: '取消',
       onOk() {
         const token = Util.getToken();
-        const postUrl = 'http://localhost:8080/api/users/delete';
-        axios
-          .post(
-            postUrl,
-            { ...item },
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            },
-          )
+        const postUrl = '/users/delete';
+        Api.post(
+          postUrl,
+          { ...item },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        )
           .then((res) => {
             console.log(res);
             if (res.data.success) {
@@ -74,21 +71,20 @@ class UsersManage extends React.Component {
   onChange(checked, item) {
     console.log(checked, item);
     const token = Util.getToken();
-    const postUrl = 'http://localhost:8080/api/users/update';
+    const postUrl = '/users/update';
     const { id, username } = item;
     const auth = checked ? 1 : 0;
-    axios
-      .post(
-        postUrl,
-        {
-          id,
-          username,
-          auth,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
+    Api.post(
+      postUrl,
+      {
+        id,
+        username,
+        auth,
+      },
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    )
       .then((res) => {
         if (res.data.success) {
           message.success('更新成功');

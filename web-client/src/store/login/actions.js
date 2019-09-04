@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { USER_LOGIN, GET_USER_AUTH } from './action-type';
 import Util from '../../js/Util';
+import Api from '../../js/Api';
 
 const actionUserLoginCreator = (type, data) => {
   const { auth, username } = data;
@@ -17,7 +17,7 @@ const actionUserLoginCreator = (type, data) => {
 
 export const userLogin = (params) => {
   return (dispatch) => {
-    return axios.post('http://localhost:8080/api/users/login', params).then((res) => {
+    return Api.post('/users/login', params).then((res) => {
       if (res.data.success) {
         Util.setToken(res.data.data.token);
         dispatch(actionUserLoginCreator(USER_LOGIN, res.data.data));
@@ -30,8 +30,8 @@ export const getUserAuth = () => {
   const token = Util.getToken();
   return (dispatch) => {
     if (token) {
-      return axios
-        .get('http://localhost:8080/api/users/info', {
+      return Api
+        .get('/users/info', {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {

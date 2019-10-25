@@ -1,3 +1,4 @@
 node_modules
 web-server/yarn.lock
 web-client/yarn.lock
+web-client/build
